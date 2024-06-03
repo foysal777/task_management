@@ -1,0 +1,47 @@
+<!-- show.html -->
+{% extends 'base.html' %} 
+
+{% block css_add %}
+<style>
+    body {
+        background-color: rgb(180, 202, 244);
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<h1 class="text-center p-5">This is Show Task Page</h1>
+<section class="d-flex justify-content-center p-3 mt-3 flex-wrap">
+
+ {% for item in combined_data %}
+    <div class="col-sm-3">
+        <div class="card border-primary mb-3 border-3 " style="max-width: 18rem;">
+            <div class="card-header bg-primary fw-bold text-light">Task ID: {{ item.task.task_id }}</div>
+            <div class="card-body text-primary">
+                <h5 class="card-title"> Date : {{ item.task.task_date }}</h5>
+                <p class="card-text text-dark ">
+                   <b> Description :  </b>  {{ item.task.task_des |truncatewords:50  }}
+                </p>
+                <h4>Categories : </h4>
+                <p>
+                    {% for category in item.categories %}
+                        <span>{{ category }}</span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                {% if not item.task.is_completed %}
+                <p>
+                    <a href="{% url 'edit_task' item.task.task_id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'delete' item.task.task_id %}" class="btn btn-danger">Delete</a>
+                </p>
+                {% else %}
+                <button type="submit" class="btn btn-success">Completed</button>
+                <a href="{% url 'delete' item.task.task_id %}" class="btn btn-danger">Delete</a>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+ {% endfor %}
+
+</section>
+{% endblock %}
